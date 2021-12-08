@@ -1,0 +1,7 @@
+{
+    ?DBEntity   rdfs:label "{{ENTITY}}"@en;
+            rdf:type ?type;
+            rdfs:label ?label.
+            FILTER strstarts(str(?type), str(dbo:))
+            FILTER ( LANG ( ?label ) = 'en' )
+ }
