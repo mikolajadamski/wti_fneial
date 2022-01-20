@@ -15,8 +15,8 @@ public class SparkQLQueryExecutor {
     }
 
     public static String generateQueryForEntities(List<String> entities) throws Exception{
-        String prefixes = getFileContent("SparkQLQueryTemplates/prefixes.txt");
-        String singleItemStatementTemplate = getFileContent("SparkQLQueryTemplates/single-item-query-statement.txt");
+        String prefixes = getFileContent("src/main/resources/SparkQLQueryTemplates/prefixes.txt");
+        String singleItemStatementTemplate = getFileContent("src/main/resources/SparkQLQueryTemplates/single-item-query-statement.txt");
         String sparkQLQuery = prefixes;
         List<String> generatedItemsQueries = new ArrayList<String>();
         for(String itemToQuery: entities){

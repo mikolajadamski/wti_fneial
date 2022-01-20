@@ -15,7 +15,7 @@ public class NamedEntityParser {
     public enum EntityParserType {
         LOCATION, ORGANIZATION, PERSON;
     }
-    private static final String TOKENIZER_PATH = "openNLP/en-token.bin";
+    private static final String TOKENIZER_PATH = "src/main/resources/openNLP/en-token.bin";
 
     public static List<String> parseAllEntities(String sentence) throws Exception{
         List<String> parsedEntities = new ArrayList<String>();
@@ -49,11 +49,11 @@ public class NamedEntityParser {
     private static String getParserFilePath(EntityParserType parserType){
         switch(parserType){
             case LOCATION:      
-                return "openNLP/en-ner-location.bin";
+                return "src/main/resources/openNLP/en-ner-location.bin";
             case ORGANIZATION:  
-                return "openNLP/en-ner-organization.bin";
+                return "src/main/resources/openNLP/en-ner-organization.bin";
             case PERSON:        
-                return "openNLP/en-ner-person.bin"; 
+                return "src/main/resources/openNLP/en-ner-person.bin";
             default:
                 return null;       
         }
