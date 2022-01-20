@@ -1,0 +1,8 @@
+{
+  "short_name": "wti_fneial",
+  "name": "WTI Focused Named Entity Identification and Linking",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
