@@ -1,5 +1,7 @@
-package put.pl.identifier;
+package put.pl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.nio.charset.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,9 +12,10 @@ import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
 
 public class SparkQLQueryExecutor {
 
-    public static void ExecuteQueryForEntities(List<String> entities) throws Exception{
-        ExecuteSparkQLQuery(generateQueryForEntities(entities));
+    public static String ExecuteQueryForEntities(List<String> entities) throws Exception{
+        return ExecuteSparkQLQuery(generateQueryForEntities(entities));
     }
+
 
     public static String generateQueryForEntities(List<String> entities) throws Exception{
         String prefixes = getFileContent("src/main/resources/SparkQLQueryTemplates/prefixes.txt");
@@ -29,16 +32,21 @@ public class SparkQLQueryExecutor {
         return sparkQLQuery;
     }
 
-    public static void ExecuteSparkQLQuery(String queryStr) throws Exception{
+    public static String ExecuteSparkQLQuery(String queryStr) throws Exception{
         Query query = QueryFactory.create(queryStr);
         
         try ( QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", queryStr) ) {
             ((QueryEngineHTTP)qexec).addParam("timeout", "10000") ;
             ResultSet rs = qexec.execSelect();
-            ResultSetFormatter.out(System.out, rs, query);
+            //ResultSetFormatter.out(System.out, rs, query);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ResultSetFormatter.outputAsJSON(stream, rs);
+            String output = new String( stream.toByteArray() );
+            return output;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private static String getFileContent(String filePath) throws Exception{
