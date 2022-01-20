@@ -11,3 +11,4 @@
 /server/.idea/
 /server/wti_fneial.iml
 /server/target/
+server/target/classes/put/pl/identifier/NamedEntityIdentifierService.class
