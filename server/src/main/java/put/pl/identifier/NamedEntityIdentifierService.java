@@ -1,6 +1,7 @@
 package put.pl.identifier;
 
 import org.springframework.stereotype.Service;
+import put.pl.SparkQLQueryExecutor;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,15 +12,13 @@ import java.util.List;
 @Service
 class NamedEntityIdentifierService {
 
-    public List<String> identifyEntities(String text) {
-
-        String sentence = "Gottfried Wilhelm Leibniz was born in Leipzig in 1646 and attended the University of Leipzig from 1661-1666.";
+    public String identifyEntities(String text) {
         try {
-            List<String> entities = NamedEntityParser.parseAllEntities(sentence);
-            SparkQLQueryExecutor.ExecuteQueryForEntities(entities);
+            List<String> entities = NamedEntityParser.parseAllEntities(text);
+            return SparkQLQueryExecutor.ExecuteQueryForEntities(entities);
         } catch (Exception e) {
             System.out.println(e);
+            return "";
         }
-        return Collections.singletonList("test");
     }
 }

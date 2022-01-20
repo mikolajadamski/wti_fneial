@@ -32,17 +32,15 @@ public class SparkQLQueryExecutor {
         return sparkQLQuery;
     }
 
-    public static String ExecuteSparkQLQuery(String queryStr) throws Exception{
+    public static String ExecuteSparkQLQuery(String queryStr) {
         Query query = QueryFactory.create(queryStr);
         
         try ( QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", queryStr) ) {
             ((QueryEngineHTTP)qexec).addParam("timeout", "10000") ;
             ResultSet rs = qexec.execSelect();
-            //ResultSetFormatter.out(System.out, rs, query);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             ResultSetFormatter.outputAsJSON(stream, rs);
-            String output = new String( stream.toByteArray() );
-            return output;
+            return stream.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }

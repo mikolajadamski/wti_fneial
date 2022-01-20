@@ -20,7 +20,7 @@ import java.util.Optional;
 class NamedEntityIdentifierRestController {
 
     @PostMapping("identified-entity")
-    public List<String> getDbpediaResponse(@RequestBody NamedEntityRequest request) {
+    public String getDbpediaResponse(@RequestBody NamedEntityRequest request) {
         return namedEntityIdentifierService.identifyEntities(request.getText());
     }
 
