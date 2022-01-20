@@ -9,5 +9,16 @@
 
 .entity {
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
 
+.data-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.data-label {
+  padding-right: 5px;
+  font-weight: 500;
 }

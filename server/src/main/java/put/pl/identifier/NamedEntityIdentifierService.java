@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import put.pl.SparkQLQueryExecutor;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ class NamedEntityIdentifierService {
             List<String> entities = NamedEntityParser.parseAllEntities(text);
             String result =  SparkQLQueryExecutor.ExecuteQueryForEntities(entities);
             NamedEntityResult namedEntityResult = objectMapper.readValue(result, NamedEntityResult.class);
-            System.out.println(namedEntityResult);
+            System.out.println("Parsed entities");
             for (ParsedEntity parsedEntity :namedEntityResult.results.bindings) {
                 System.out.println(parsedEntity.dbEntity.value);
                 System.out.println(parsedEntity.type.value);

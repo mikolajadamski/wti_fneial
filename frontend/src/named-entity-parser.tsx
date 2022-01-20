@@ -11,9 +11,11 @@ export const NamedEntityParser = () => {
 
     const [sentence, setSentence] = useState<string>('');
     const [results, setResults] = useState<Entity[]>();
+    const [isFetching, setIsFetching] = useState<boolean>(false);
 
     const getEntities = (event: any) => {
         event.preventDefault();
+        setIsFetching(() => true);
         fetch('api/identified-entity', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -22,6 +24,9 @@ export const NamedEntityParser = () => {
             })
         }).then(response => response.json())
             .then(data => setResults(() => {
+                if (!data) {
+                    return null;
+                }
                 return data.results.bindings.map((entityFromServer: any) => {
                     return {
                         entityUri: entityFromServer.DBEntity.value,
@@ -30,6 +35,8 @@ export const NamedEntityParser = () => {
                     }
                 })
             }))
+            .catch(() => setResults(() => []))
+            .finally(() => setIsFetching(() => false));
     }
 
     return (
@@ -45,19 +52,34 @@ export const NamedEntityParser = () => {
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
-            {results?.length !== 0 && results?.map((entity, id) => {
+            {results?.length !== 0 && !isFetching && results?.map((entity, id) => {
                 return (
                     <div className="entity" key={id}>
-                        <div>{'DBEntity'}</div>
-                        <div><a href={entity.entityUri}>{entity.entityUri}</a></div>
-                        <div>{'Label'}</div>
-                        <div>{entity.label}</div>
-                        <div>{'Type'}</div>
-                        <div><a href={entity.typeUri}>{entity.typeUri}</a></div>
+                        <div className="data-row">
+                            <div className="data-label">{'DBEntity'}</div>
+                            <div><a href={entity.entityUri} target="_blank">{entity.entityUri}</a></div>
+                        </div>
+                        <div className="data-row">
+                            <div className="data-label">{'Label'}</div>
+                            <div>{entity.label}</div>
+                        </div>
+                       <div className="data-row">
+                           <div className="data-label">{'Type'}</div>
+                           <div><a href={entity.typeUri} target="_blank">{entity.typeUri}</a></div>
+                       </div>
                     </div>
                 );
             })
             }
+            {isFetching &&
+                <h2>
+                    {'Fetching...'}
+                </h2>
+            }
+            {results?.length === 0 && !isFetching &&
+            <h2>
+                {'No data'}
+            </h2>}
         </div>
     );
 }
