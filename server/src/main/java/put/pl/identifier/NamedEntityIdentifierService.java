@@ -11,15 +11,9 @@ import java.util.List;
 @Service
 class NamedEntityIdentifierService {
 
-    public List<String> identifyEntities(String text) {
-
-        String sentence = "Gottfried Wilhelm Leibniz was born in Leipzig in 1646 and attended the University of Leipzig from 1661-1666.";
-        try {
-            List<String> entities = NamedEntityParser.parseAllEntities(sentence);
-            SparkQLQueryExecutor.ExecuteQueryForEntities(entities);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return Collections.singletonList("test");
+    public String identifyEntities(String sentence) {
+        List<String> entities = NamedEntityParser.parseAllEntities(sentence);
+        String outputAsJson = SparkQLQueryExecutor.ExecuteQueryForEntities(entities);
+        return outputAsJson;
     }
 }
