@@ -1,5 +1,6 @@
 package put.pl.identifier;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import put.pl.SparkQLQueryExecutor;
 
@@ -12,13 +13,24 @@ import java.util.List;
 @Service
 class NamedEntityIdentifierService {
 
-    public String identifyEntities(String text) {
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    public NamedEntityResult identifyEntities(String text) {
         try {
             List<String> entities = NamedEntityParser.parseAllEntities(text);
-            return SparkQLQueryExecutor.ExecuteQueryForEntities(entities);
+            String result =  SparkQLQueryExecutor.ExecuteQueryForEntities(entities);
+            NamedEntityResult namedEntityResult = objectMapper.readValue(result, NamedEntityResult.class);
+            System.out.println(namedEntityResult);
+            for (ParsedEntity parsedEntity :namedEntityResult.results.bindings) {
+                System.out.println(parsedEntity.dbEntity.value);
+                System.out.println(parsedEntity.type.value);
+                System.out.println(parsedEntity.label.value);
+                System.out.println();
+            }
+            return namedEntityResult;
         } catch (Exception e) {
             System.out.println(e);
-            return "";
+            return null;
         }
     }
 }
