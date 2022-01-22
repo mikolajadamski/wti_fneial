@@ -2,7 +2,7 @@
     ?DBEntity   rdfs:label "{{ENTITY}}"@en;
             rdf:type ?type;
             rdfs:label ?label.
-            FILTER (str(?type) = str(dbo:Person) || str(?type) = str(dbo:Place) || str(?type) = str(dbo:Organization))
+            FILTER (str(?type) = str(dbo:Person) || str(?type) = str(dbo:Place) || str(?type) = str(dbo:Organisation))
             FILTER ( LANG ( ?label ) = 'en' )
  }
 
